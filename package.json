@@ -30,7 +30,6 @@
   "bugs": {
     "url": "https://github.com/tekie-labs/tekie-blockly/issues"
   },
-  "homepage": "https://github.com/tekie-labs/tekie-blockly#readme",
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@testing-library/jest-dom": "^5.11.4",
