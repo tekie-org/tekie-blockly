@@ -1,27 +1,48 @@
 {
   "name": "tekie-blockly",
-  "version": "0.1.0",
+  "description": "React Wrapper For Blockly",
+  "keywords": [
+    "react",
+    "blockly"
+  ],
+  "author": "Smith",
+  "version": "0.1.0-alpha.1",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.0.1"
-  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "lib:build": "rm -rf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tekie-labs/tekie-blockly.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tekie-labs/tekie-blockly/issues"
+  },
+  "homepage": "https://github.com/tekie-labs/tekie-blockly#readme",
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "blockly": "^6.20210701.0",
+    "node-blockly": "^1.2.8",
+    "node-sass": "^4.13.1",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3"
   },
   "browserslist": {
     "production": [
@@ -34,5 +55,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0"
   }
 }
