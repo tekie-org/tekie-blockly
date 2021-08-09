@@ -64,6 +64,12 @@ const useBlockly = ({
   React.useEffect(() => {
     workspaceConfigurationRef.current = workspaceConfiguration;
   }, [workspaceConfiguration]);
+  
+  React.useEffect(() => {
+    if (typeof initialXml === 'string') {
+      setXml(initialXml)
+    }
+  }, [initialXml]);
 
   /** 
    * Toolbox configuration can be either a JSON from Blockly's official documentation 
@@ -86,7 +92,7 @@ const useBlockly = ({
 
   React.useEffect(() => {
     /** Toolbox will not be initialized is workspace is readOnly */
-    if (!workspaceConfiguration.readOnly) {
+    if (workspaceConfiguration.readOnly !== true) {
       try {
         (async () => {
           if (customTools) {
