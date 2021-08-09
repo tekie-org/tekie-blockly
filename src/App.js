@@ -1,33 +1,35 @@
 import React from 'react'
 import Blockly from 'blockly'
 import { BlocklyWorkspace } from './lib';
-
-const demoBlock =  {
-    name: 'demoBlock',
-    category: 'Blocks',
-    block: {
-      init: function () {
-        this.jsonInit({
-          message0: 'Hello %1',
-          args0: [
-            {
-              type: 'field_input',
-              name: 'NAME',
-              check: 'String',
-            },
-          ],
-          output: 'String',
-          colour: 160,
-          tooltip: 'Says Hello',
-        });
-      },
-    },
-    generator: (block) => {
-      const message = `'${block.getFieldValue('NAME')}'` || '\'\'';
-      const code = `console.log('Hello ${message}')`;
-      return [code, Blockly.JavaScript.ORDER_MEMBER];
-    },
-  };
+/**
+ const demoBlock =  {
+     name: 'demoBlock',
+     category: 'Blocks',
+     block: {
+       init: function () {
+         this.jsonInit({
+           message0: 'Hello %1',
+           args0: [
+             {
+               type: 'field_input',
+               name: 'NAME',
+               check: 'String',
+             },
+           ],
+           output: 'String',
+           colour: 160,
+           tooltip: 'Says Hello',
+         });
+       },
+     },
+     generator: (block) => {
+       const message = `'${block.getFieldValue('NAME')}'` || '\'\'';
+       const code = `console.log('Hello ${message}')`;
+       return [code, Blockly.JavaScript.ORDER_MEMBER];
+     },
+   };
+ * 
+ */
   
 const App = () => {
   const workspaceConfiguration = {

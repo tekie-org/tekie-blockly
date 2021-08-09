@@ -15,7 +15,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param {*} onImportXmlError 
  * @returns Boolean
  */
-const importFromXml = (xml, workspace, onImportXmlError) => {
+var importFromXml = function importFromXml(xml, workspace, onImportXmlError) {
   try {
     _blockly.default.Xml.domToWorkspace(_blockly.default.Xml.textToDom(xml), workspace);
 
@@ -37,9 +37,9 @@ const importFromXml = (xml, workspace, onImportXmlError) => {
 
 exports.importFromXml = importFromXml;
 
-const initCustomTools = function initCustomTools(tools) {
-  let language = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _blockly.default.JavaScript;
-  tools.forEach(tool => {
+var initCustomTools = function initCustomTools(tools) {
+  var language = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _blockly.default.JavaScript;
+  tools.forEach(function (tool) {
     _blockly.default.Blocks[tool.name] = tool.block;
     language[tool.name] = tool.generator;
   });
@@ -53,17 +53,17 @@ const initCustomTools = function initCustomTools(tools) {
 
 exports.initCustomTools = initCustomTools;
 
-const buildToolboxJSON = tools => {
-  const groupedByCategory = {};
-  const CATEGORY_TOOLBOX_JSON = {
+var buildToolboxJSON = function buildToolboxJSON(tools) {
+  var groupedByCategory = {};
+  var CATEGORY_TOOLBOX_JSON = {
     kind: "categoryToolbox",
     contents: []
   };
-  const FLYOUT_TOOLBOX_JSON = {
+  var FLYOUT_TOOLBOX_JSON = {
     kind: "flyoutToolbox",
     contents: []
   };
-  tools.forEach(item => {
+  tools.forEach(function (item) {
     if (item.category) {
       groupedByCategory[item.category] = groupedByCategory[item.category] || [];
       groupedByCategory[item.category].push({
@@ -79,7 +79,7 @@ const buildToolboxJSON = tools => {
   });
 
   if (Object.keys(groupedByCategory).length) {
-    Object.keys(groupedByCategory).map(key => {
+    Object.keys(groupedByCategory).map(function (key) {
       CATEGORY_TOOLBOX_JSON.contents.push({
         kind: 'category',
         name: key,

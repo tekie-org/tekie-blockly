@@ -4,7 +4,7 @@ var _blockly = _interopRequireDefault(require("blockly"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const defaultBlockStyles = {
+var defaultBlockStyles = {
   "colour_blocks": {
     "colourPrimary": "20"
   },
@@ -37,7 +37,7 @@ const defaultBlockStyles = {
     "hat": "cap"
   }
 };
-const categoryStyles = {
+var categoryStyles = {
   "colour_category": {
     "colour": "20"
   },
@@ -66,7 +66,7 @@ const categoryStyles = {
     "colour": "310"
   }
 };
-const componentStyles = {
+var componentStyles = {
   "workspaceBackgroundColour": "#00171f",
   "toolboxBackgroundColour": "#3eaec1",
   "toolboxForegroundColour": "#FFF",
@@ -80,7 +80,7 @@ const componentStyles = {
   "markerColour": "",
   "cursorColour": "red"
 };
-const fontStyles = {
+var fontStyles = {
   "family": "Nunito, sans-serif",
   "weight": "normal",
   "size": 12

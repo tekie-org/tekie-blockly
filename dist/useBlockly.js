@@ -5,15 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.promise.js");
-
 var _react = _interopRequireDefault(require("react"));
 
 var _blockly = _interopRequireDefault(require("blockly"));
 
-var _debounce = _interopRequireDefault(require("./utils/debounce"));
+var _debounce3 = _interopRequireDefault(require("./utils/debounce"));
 
 var _utils = require("./utils");
 
@@ -31,6 +27,22 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 /**
  * ~ Blockly React Hook
  * @param ref Workspace Div Reference
@@ -45,49 +57,59 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  * @param onDispose
  * @returns [ xml, workspace ]
  */
-const useBlockly = _ref => {
-  let {
-    ref,
-    initialXml,
-    toolboxConfiguration,
-    workspaceConfiguration,
-    onWorkspaceChange,
-    onImportXmlError,
-    onInject,
-    onDispose,
-    customTheme,
-    customTools
-  } = _ref;
+var useBlockly = function useBlockly(_ref) {
+  var ref = _ref.ref,
+      initialXml = _ref.initialXml,
+      toolboxConfiguration = _ref.toolboxConfiguration,
+      workspaceConfiguration = _ref.workspaceConfiguration,
+      onWorkspaceChange = _ref.onWorkspaceChange,
+      onImportXmlError = _ref.onImportXmlError,
+      onInject = _ref.onInject,
+      onDispose = _ref.onDispose,
+      customTheme = _ref.customTheme,
+      customTools = _ref.customTools;
 
-  const [workspace, setWorkspace] = _react.default.useState(null);
+  var _React$useState = _react.default.useState(null),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      workspace = _React$useState2[0],
+      setWorkspace = _React$useState2[1];
 
-  const [xml, setXml] = _react.default.useState(initialXml);
+  var _React$useState3 = _react.default.useState(initialXml),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      xml = _React$useState4[0],
+      setXml = _React$useState4[1];
 
-  const [didInitialImport, setDidInitialImport] = _react.default.useState(false);
+  var _React$useState5 = _react.default.useState(false),
+      _React$useState6 = _slicedToArray(_React$useState5, 2),
+      didInitialImport = _React$useState6[0],
+      setDidInitialImport = _React$useState6[1];
 
-  const [didHandleNewWorkspace, setDidHandleNewWorkspace] = _react.default.useState(false);
+  var _React$useState7 = _react.default.useState(false),
+      _React$useState8 = _slicedToArray(_React$useState7, 2),
+      didHandleNewWorkspace = _React$useState8[0],
+      setDidHandleNewWorkspace = _React$useState8[1];
 
-  const onInjectRef = _react.default.useRef(onInject);
+  var onInjectRef = _react.default.useRef(onInject);
 
-  const onDisposeRef = _react.default.useRef(onDispose);
+  var onDisposeRef = _react.default.useRef(onDispose);
 
-  const workspaceConfigurationRef = _react.default.useRef(workspaceConfiguration);
+  var workspaceConfigurationRef = _react.default.useRef(workspaceConfiguration);
 
-  const toolboxConfigurationRef = _react.default.useRef(toolboxConfiguration);
+  var toolboxConfigurationRef = _react.default.useRef(toolboxConfiguration);
   /** Inject & Dispose ref init */
 
 
-  _react.default.useEffect(() => {
+  _react.default.useEffect(function () {
     onInjectRef.current = onInject;
   }, [onInject]);
 
-  _react.default.useEffect(() => {
+  _react.default.useEffect(function () {
     onDisposeRef.current = onDispose;
   }, [onDispose]);
   /** Update Workspace configuration */
 
 
-  _react.default.useEffect(() => {
+  _react.default.useEffect(function () {
     workspaceConfigurationRef.current = workspaceConfiguration;
   }, [workspaceConfiguration]);
   /** 
@@ -97,7 +119,7 @@ const useBlockly = _ref => {
   */
 
 
-  _react.default.useEffect(() => {
+  _react.default.useEffect(function () {
     try {
       /** Toolbox will not be initialized is workspace is readOnly */
       if (!workspaceConfiguration.readOnly) {
@@ -111,26 +133,54 @@ const useBlockly = _ref => {
     }
   }, [toolboxConfiguration, workspace]);
 
-  _react.default.useEffect(() => {
+  _react.default.useEffect(function () {
     /** Toolbox will not be initialized is workspace is readOnly */
     if (!workspaceConfiguration.readOnly) {
       try {
-        (async () => {
-          if (customTools) {
-            await (0, _utils.initCustomTools)(customTools);
-            const CustomToolboxJSON = await (0, _utils.buildToolboxJSON)(customTools);
+        _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+          var CustomToolboxJSON;
+          return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  if (!customTools) {
+                    _context.next = 13;
+                    break;
+                  }
 
-            if (CustomToolboxJSON && workspace) {
-              if (toolboxConfigurationRef.current && toolboxConfigurationRef.current.kind !== CustomToolboxJSON.kind) {
-                /** Blockly doesn't support dynamic change of toolbox mode i.e it can be either of kind flyout or category */
-                throw new Error('Cannot Change Toolbox Mode');
-              } else {
-                workspace.updateToolbox(CustomToolboxJSON);
-                toolboxConfigurationRef.current = CustomToolboxJSON;
+                  _context.next = 3;
+                  return (0, _utils.initCustomTools)(customTools);
+
+                case 3:
+                  _context.next = 5;
+                  return (0, _utils.buildToolboxJSON)(customTools);
+
+                case 5:
+                  CustomToolboxJSON = _context.sent;
+
+                  if (!(CustomToolboxJSON && workspace)) {
+                    _context.next = 13;
+                    break;
+                  }
+
+                  if (!(toolboxConfigurationRef.current && toolboxConfigurationRef.current.kind !== CustomToolboxJSON.kind)) {
+                    _context.next = 11;
+                    break;
+                  }
+
+                  throw new Error('Cannot Change Toolbox Mode');
+
+                case 11:
+                  workspace.updateToolbox(CustomToolboxJSON);
+                  toolboxConfigurationRef.current = CustomToolboxJSON;
+
+                case 13:
+                case "end":
+                  return _context.stop();
               }
             }
-          }
-        })();
+          }, _callee);
+        }))();
       } catch (e) {
         console.log('useBlockly (ERROR) ==> ', e);
       }
@@ -139,7 +189,7 @@ const useBlockly = _ref => {
   /** Trigger when workspace changes helpful in executing code of given blocks */
 
 
-  const handleWorkspaceChanged = _react.default.useCallback(newWorkspace => {
+  var handleWorkspaceChanged = _react.default.useCallback(function (newWorkspace) {
     if (onWorkspaceChange) {
       onWorkspaceChange(newWorkspace);
     }
@@ -147,8 +197,8 @@ const useBlockly = _ref => {
   /** Initial Workspace Creation */
 
 
-  _react.default.useEffect(() => {
-    const newWorkspace = _blockly.default.inject(ref.current, _objectSpread(_objectSpread({}, workspaceConfigurationRef.current), {}, {
+  _react.default.useEffect(function () {
+    var newWorkspace = _blockly.default.inject(ref.current, _objectSpread(_objectSpread({}, workspaceConfigurationRef.current), {}, {
       toolbox: toolboxConfigurationRef.current
     }));
 
@@ -165,7 +215,7 @@ const useBlockly = _ref => {
      */
 
 
-    return () => {
+    return function () {
       try {
         newWorkspace.dispose();
 
@@ -182,7 +232,7 @@ const useBlockly = _ref => {
    */
 
 
-  _react.default.useEffect(() => {
+  _react.default.useEffect(function () {
     if (workspace && !didHandleNewWorkspace) {
       handleWorkspaceChanged(workspace);
     }
@@ -192,17 +242,17 @@ const useBlockly = _ref => {
    */
 
 
-  _react.default.useEffect(() => {
+  _react.default.useEffect(function () {
     if (workspace == null) {
       return undefined;
     }
 
-    const listener = () => {
+    var listener = function listener() {
       handleWorkspaceChanged(workspace);
     };
 
     workspace.addChangeListener(listener);
-    return () => {
+    return function () {
       workspace.removeChangeListener(listener);
     };
   }, [workspace, handleWorkspaceChanged]);
@@ -211,22 +261,26 @@ const useBlockly = _ref => {
    */
 
 
-  _react.default.useEffect(() => {
+  _react.default.useEffect(function () {
     if (workspace == null) {
       return undefined;
     }
 
-    const [callback, cancel] = (0, _debounce.default)(() => {
-      const newXml = _blockly.default.Xml.domToText(_blockly.default.Xml.workspaceToDom(workspace));
+    var _debounce = (0, _debounce3.default)(function () {
+      var newXml = _blockly.default.Xml.domToText(_blockly.default.Xml.workspaceToDom(workspace));
 
       if (newXml === xml) {
         return;
       }
 
       setXml(newXml);
-    }, 200);
+    }, 200),
+        _debounce2 = _slicedToArray(_debounce, 2),
+        callback = _debounce2[0],
+        cancel = _debounce2[1];
+
     workspace.addChangeListener(callback);
-    return () => {
+    return function () {
       workspace.removeChangeListener(callback);
       cancel();
     };
@@ -236,9 +290,9 @@ const useBlockly = _ref => {
    */
 
 
-  _react.default.useEffect(() => {
+  _react.default.useEffect(function () {
     try {
-      const blocklyTheme = customTheme || _blockly.default.Theme.TekiePrimary;
+      var blocklyTheme = customTheme || _blockly.default.Theme.TekiePrimary;
 
       if (workspace && blocklyTheme) {
         workspace.setTheme(blocklyTheme);
@@ -252,9 +306,9 @@ const useBlockly = _ref => {
    */
 
 
-  _react.default.useEffect(() => {
+  _react.default.useEffect(function () {
     if (xml && workspace && !didInitialImport) {
-      const success = (0, _utils.importFromXml)(xml, workspace, onImportXmlError);
+      var success = (0, _utils.importFromXml)(xml, workspace, onImportXmlError);
 
       if (!success) {
         setXml(null);
