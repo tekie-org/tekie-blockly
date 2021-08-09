@@ -1,7 +1,6 @@
 import React from 'react'
 import Blockly from 'blockly'
-import ConfigFiles from './lib/defaultConfig';
-import { useBlockly } from './lib';
+import { BlocklyWorkspace } from './lib';
 
 const demoBlock =  {
     name: 'demoBlock',
@@ -31,7 +30,6 @@ const demoBlock =  {
   };
   
 const App = () => {
-  const editorDiv = React.useRef(null);
   const workspaceConfiguration = {
     readOnly: false,
     // horizontalLayout: true,
@@ -64,27 +62,16 @@ const App = () => {
 
   const onWorkspaceChange = (e) => {
     console.log(e)
-
   }
-
-  const [workpace, xml] = useBlockly({
-    ref: editorDiv,
-    initialXml: '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="text" x="70" y="30"><field name="TEXT"></field></block></xml>',
-    toolboxConfiguration: ConfigFiles.INITIAL_TOOLBOX_JSON,
-    // customTools: [demoBlock],
-    workspaceConfiguration,
-    onWorkspaceChange,
-    onXmlChange: () => {},
-    onImportXmlError: () => {},
-    onInject: () => {},
-    onDispose: () => {},
-    customTheme: Blockly.Theme.TekiePrimary,
-  });
 
   return (
     <div className="App">
       <div style={{ width: '100%', height: '100vh' }}>
-       <div ref={editorDiv} style={{ width: '100%', height: '100%' }} />
+        <BlocklyWorkspace
+          onWorkspaceChange={onWorkspaceChange}
+          workspaceConfiguration={workspaceConfiguration}
+          initialXml='<xml xmlns="http://www.w3.org/1999/xhtml"><block type="text" x="70" y="30"><field name="TEXT"></field></block></xml>'
+        />
       </div>
     </div>
   );

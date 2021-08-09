@@ -13,11 +13,15 @@ var _react = _interopRequireDefault(require("react"));
 
 var _blockly = _interopRequireDefault(require("blockly"));
 
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
 var _debounce = _interopRequireDefault(require("./utils/debounce"));
 
 var _utils = require("./utils");
+
+require("./customCategory");
+
+require("./customTheme");
+
+require("./customStyle.scss");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27,32 +31,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-const propTypes = {
-  initialXml: _propTypes.default.string,
-  toolboxConfiguration: _propTypes.default.object,
-  // eslint-disable-line react/forbid-prop-types
-  workspaceConfiguration: _propTypes.default.object,
-  // eslint-disable-line react/forbid-prop-types
-  customTools: _propTypes.default.arrayOf(_propTypes.default.object),
-  // eslint-disable-line react/forbid-prop-types
-  onWorkspaceChange: _propTypes.default.func,
-  onImportXmlError: _propTypes.default.func,
-  onXmlChange: _propTypes.default.func,
-  onInject: _propTypes.default.func,
-  onDispose: _propTypes.default.func,
-  customTheme: _propTypes.default.any
-};
-const defaultProps = {
-  initialXml: null,
-  toolboxConfiguration: null,
-  workspaceConfiguration: null,
-  onWorkspaceChange: () => {},
-  onImportXmlError: () => {},
-  onXmlChange: () => {},
-  onInject: () => {},
-  onDispose: () => {},
-  customTheme: null
-};
 /**
  * ~ Blockly React Hook
  * @param ref Workspace Div Reference
@@ -67,7 +45,6 @@ const defaultProps = {
  * @param onDispose
  * @returns [ xml, workspace ]
  */
-
 const useBlockly = _ref => {
   let {
     ref,
@@ -89,12 +66,16 @@ const useBlockly = _ref => {
   const [didInitialImport, setDidInitialImport] = _react.default.useState(false);
 
   const [didHandleNewWorkspace, setDidHandleNewWorkspace] = _react.default.useState(false);
-  /** Inject & Dispose ref init */
-
 
   const onInjectRef = _react.default.useRef(onInject);
 
   const onDisposeRef = _react.default.useRef(onDispose);
+
+  const workspaceConfigurationRef = _react.default.useRef(workspaceConfiguration);
+
+  const toolboxConfigurationRef = _react.default.useRef(toolboxConfiguration);
+  /** Inject & Dispose ref init */
+
 
   _react.default.useEffect(() => {
     onInjectRef.current = onInject;
@@ -106,8 +87,6 @@ const useBlockly = _ref => {
   /** Update Workspace configuration */
 
 
-  const workspaceConfigurationRef = _react.default.useRef(workspaceConfiguration);
-
   _react.default.useEffect(() => {
     workspaceConfigurationRef.current = workspaceConfiguration;
   }, [workspaceConfiguration]);
@@ -117,8 +96,6 @@ const useBlockly = _ref => {
    * or it can be array of @params customTools.
   */
 
-
-  const toolboxConfigurationRef = _react.default.useRef(toolboxConfiguration);
 
   _react.default.useEffect(() => {
     try {
@@ -261,8 +238,10 @@ const useBlockly = _ref => {
 
   _react.default.useEffect(() => {
     try {
-      if (workspace && customTheme) {
-        workspace.setTheme(customTheme);
+      const blocklyTheme = customTheme || _blockly.default.Theme.TekiePrimary;
+
+      if (workspace && blocklyTheme) {
+        workspace.setTheme(blocklyTheme);
       }
     } catch (e) {
       console.log('useBlockly [ERROR]-->', e);
@@ -288,7 +267,5 @@ const useBlockly = _ref => {
   return [workspace, xml];
 };
 
-useBlockly.propTypes = propTypes;
-useBlockly.defaultProps = defaultProps;
 var _default = useBlockly;
 exports.default = _default;
