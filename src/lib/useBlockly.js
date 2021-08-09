@@ -32,7 +32,9 @@ const useBlockly = ({
   ref,
   initialXml,
   toolboxConfiguration,
-  workspaceConfiguration,
+  workspaceConfiguration = {
+    readOnly: false,
+  },
   onWorkspaceChange,
   onImportXmlError,
   onInject,
