@@ -11,6 +11,8 @@ var _blockly = _interopRequireDefault(require("blockly"));
 
 var _debounce3 = _interopRequireDefault(require("./utils/debounce"));
 
+var _defaultConfig = _interopRequireDefault(require("./defaultConfig"));
+
 var _utils = require("./utils");
 
 require("./customCategory");
@@ -61,13 +63,18 @@ var useBlockly = function useBlockly(_ref) {
   var ref = _ref.ref,
       initialXml = _ref.initialXml,
       toolboxConfiguration = _ref.toolboxConfiguration,
-      workspaceConfiguration = _ref.workspaceConfiguration,
+      _ref$workspaceConfigu = _ref.workspaceConfiguration,
+      workspaceConfiguration = _ref$workspaceConfigu === void 0 ? {
+    readOnly: false
+  } : _ref$workspaceConfigu,
       onWorkspaceChange = _ref.onWorkspaceChange,
       onImportXmlError = _ref.onImportXmlError,
       onInject = _ref.onInject,
       onDispose = _ref.onDispose,
       customTheme = _ref.customTheme,
-      customTools = _ref.customTools;
+      customTools = _ref.customTools,
+      _ref$useDefaultToolbo = _ref.useDefaultToolbox,
+      useDefaultToolbox = _ref$useDefaultToolbo === void 0 ? false : _ref$useDefaultToolbo;
 
   var _React$useState = _react.default.useState(null),
       _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -88,6 +95,9 @@ var useBlockly = function useBlockly(_ref) {
       _React$useState8 = _slicedToArray(_React$useState7, 2),
       didHandleNewWorkspace = _React$useState8[0],
       setDidHandleNewWorkspace = _React$useState8[1];
+
+  workspaceConfiguration = workspaceConfiguration || _defaultConfig.default.DEFAULT_WORKSPACE_JSON;
+  toolboxConfiguration = useDefaultToolbox ? _defaultConfig.default.INITIAL_TOOLBOX_JSON : toolboxConfiguration;
 
   var onInjectRef = _react.default.useRef(onInject);
 
@@ -122,20 +132,22 @@ var useBlockly = function useBlockly(_ref) {
   _react.default.useEffect(function () {
     try {
       /** Toolbox will not be initialized is workspace is readOnly */
-      if (!workspaceConfiguration.readOnly) {
+      if (workspaceConfiguration.readOnly !== true) {
         if (toolboxConfiguration && workspace) {
           toolboxConfigurationRef.current = toolboxConfiguration;
           workspace.updateToolbox(toolboxConfiguration);
         }
       }
     } catch (e) {
-      console.log('useBlockly (ERROR) ==> ', e);
+      console.error('From useBlockly ==> ', e);
     }
   }, [toolboxConfiguration, workspace]);
 
   _react.default.useEffect(function () {
     /** Toolbox will not be initialized is workspace is readOnly */
-    if (!workspaceConfiguration.readOnly) {
+    if (workspaceConfiguration.readOnly !== true) {
+      console.log('CHECKING', customTools);
+
       try {
         _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
           var CustomToolboxJSON;
@@ -182,7 +194,7 @@ var useBlockly = function useBlockly(_ref) {
           }, _callee);
         }))();
       } catch (e) {
-        console.log('useBlockly (ERROR) ==> ', e);
+        console.error('From useBlockly ==> ', e);
       }
     }
   }, [customTools, workspace]);
@@ -223,7 +235,7 @@ var useBlockly = function useBlockly(_ref) {
           onDisposeFunction(newWorkspace);
         }
       } catch (e) {
-        console.log('useBlockly [ERROR]-->', e);
+        console.error('From useBlockly ==> ', e);
       }
     };
   }, [toolboxConfigurationRef]);
@@ -298,7 +310,7 @@ var useBlockly = function useBlockly(_ref) {
         workspace.setTheme(blocklyTheme);
       }
     } catch (e) {
-      console.log('useBlockly [ERROR]-->', e);
+      console.error('From useBlockly ==> ', e);
     }
   }, [customTheme, workspace]);
   /**
