@@ -33,7 +33,6 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "blockly": "^6.20210701.0",
-    "node-blockly": "^1.2.8",
     "node-sass": "^6.0.1",
     "prop-types": "^15.7.2",
     "react": "16.8.0",
@@ -41,7 +40,7 @@
     "react-scripts": "^4.0.3"
   },
   "peerDependencies": {
-    "react": "^16.8"
+    "react": "^16.8 || ^17.0"
   },
   "browserslist": {
     "production": [

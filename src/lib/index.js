@@ -1,13 +1,4 @@
 import useBlockly from './useBlockly';
-/**
- * Custom Category & Theme For Blockly
- */
-import './customCategory'
-import './customTheme'
+import BlocklyWorkspace from './BlocklyWorkspace';
 
-/**
- * Overide Blockly's Toolbox & Workspace Styles
- */
-import './customStyle.scss'
-
-export { useBlockly }
+export { BlocklyWorkspace, useBlockly }
