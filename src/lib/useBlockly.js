@@ -1,33 +1,18 @@
 import React from 'react';
 import Blockly from 'blockly';
-import PropTypes from 'prop-types';
 import debounce from './utils/debounce';
 import { importFromXml, initCustomTools, buildToolboxJSON } from './utils'
 
-const propTypes = {
-  initialXml: PropTypes.string,
-  toolboxConfiguration: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  workspaceConfiguration: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  customTools: PropTypes.arrayOf(PropTypes.object), // eslint-disable-line react/forbid-prop-types
-  onWorkspaceChange: PropTypes.func,
-  onImportXmlError: PropTypes.func,
-  onXmlChange: PropTypes.func,
-  onInject: PropTypes.func,
-  onDispose: PropTypes.func,
-  customTheme: PropTypes.any,
-};
+/**
+ * Custom Category & Theme For Blockly
+ */
+import './customCategory'
+import './customTheme'
 
-const defaultProps = {
-  initialXml: null,
-  toolboxConfiguration: null,
-  workspaceConfiguration: null,
-  onWorkspaceChange: () => {},
-  onImportXmlError: () => {},
-  onXmlChange: () => {},
-  onInject: () => {},
-  onDispose: () => {},
-  customTheme: null
-};
+/**
+ * Overide Blockly's Toolbox & Workspace Styles
+ */
+import './customStyle.scss'
 
 /**
  * ~ Blockly React Hook
@@ -59,10 +44,13 @@ const useBlockly = ({
   const [xml, setXml] = React.useState(initialXml);
   const [didInitialImport, setDidInitialImport] = React.useState(false);
   const [didHandleNewWorkspace, setDidHandleNewWorkspace] = React.useState(false);
-
-  /** Inject & Dispose ref init */
   const onInjectRef = React.useRef(onInject);
   const onDisposeRef = React.useRef(onDispose);
+  const workspaceConfigurationRef = React.useRef(workspaceConfiguration);
+  const toolboxConfigurationRef = React.useRef(toolboxConfiguration)
+
+
+  /** Inject & Dispose ref init */
   React.useEffect(() => {
     onInjectRef.current = onInject;
   }, [onInject]);
@@ -71,7 +59,6 @@ const useBlockly = ({
   }, [onDispose]);
 
   /** Update Workspace configuration */
-  const workspaceConfigurationRef = React.useRef(workspaceConfiguration);
   React.useEffect(() => {
     workspaceConfigurationRef.current = workspaceConfiguration;
   }, [workspaceConfiguration]);
@@ -81,7 +68,6 @@ const useBlockly = ({
    * i.e @params toolboxConfiguration
    * or it can be array of @params customTools.
   */
-  const toolboxConfigurationRef = React.useRef(toolboxConfiguration);
   React.useEffect(() => {
     try {
       /** Toolbox will not be initialized is workspace is readOnly */
@@ -218,8 +204,9 @@ const useBlockly = ({
    */
   React.useEffect(() => {
     try {
-      if (workspace && customTheme) {
-        workspace.setTheme(customTheme)
+      const blocklyTheme = customTheme || Blockly.Theme.TekiePrimary
+      if (workspace && blocklyTheme) {
+        workspace.setTheme(blocklyTheme)
       }
     } catch (e) {
       console.log('useBlockly [ERROR]-->', e)
@@ -241,8 +228,5 @@ const useBlockly = ({
 
   return [ workspace, xml ];
 };
-
-useBlockly.propTypes = propTypes;
-useBlockly.defaultProps = defaultProps;
 
 export default useBlockly;
