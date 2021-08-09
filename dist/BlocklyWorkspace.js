@@ -11,8 +11,6 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _useBlockly3 = _interopRequireDefault(require("./useBlockly"));
 
-var _defaultConfig = _interopRequireDefault(require("./defaultConfig"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -40,7 +38,8 @@ var propTypes = {
   onXmlChange: _propTypes.default.func,
   onInject: _propTypes.default.func,
   onDispose: _propTypes.default.func,
-  customTheme: _propTypes.default.any
+  customTheme: _propTypes.default.any,
+  useDefaultToolbox: _propTypes.default.bool
 };
 var defaultProps = {
   initialXml: null,
@@ -51,7 +50,8 @@ var defaultProps = {
   onXmlChange: function onXmlChange() {},
   onInject: function onInject() {},
   onDispose: function onDispose() {},
-  customTheme: null
+  customTheme: null,
+  useDefaultToolbox: false
 };
 
 function BlocklyWorkspace(_ref) {
@@ -65,14 +65,16 @@ function BlocklyWorkspace(_ref) {
       onDispose = _ref.onDispose,
       customTheme = _ref.customTheme,
       customTools = _ref.customTools,
-      className = _ref.className;
+      className = _ref.className,
+      _ref$useDefaultToolbo = _ref.useDefaultToolbox,
+      useDefaultToolbox = _ref$useDefaultToolbo === void 0 ? false : _ref$useDefaultToolbo;
 
   var editorDiv = _react.default.useRef(null);
 
   var _useBlockly = (0, _useBlockly3.default)({
     ref: editorDiv,
     initialXml: initialXml,
-    toolboxConfiguration: toolboxConfiguration || _defaultConfig.default.INITIAL_TOOLBOX_JSON,
+    toolboxConfiguration: toolboxConfiguration,
     customTools: customTools,
     workspaceConfiguration: workspaceConfiguration,
     onWorkspaceChange: onWorkspaceChange,
@@ -80,7 +82,8 @@ function BlocklyWorkspace(_ref) {
     onImportXmlError: onImportXmlError,
     onInject: onInject,
     onDispose: onDispose,
-    customTheme: customTheme
+    customTheme: customTheme,
+    useDefaultToolbox: useDefaultToolbox
   }),
       _useBlockly2 = _slicedToArray(_useBlockly, 1),
       xml = _useBlockly2[0];
