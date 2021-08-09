@@ -1,6 +1,7 @@
 import React from 'react';
 import Blockly from 'blockly';
 import debounce from './utils/debounce';
+import config from './defaultConfig'
 import { importFromXml, initCustomTools, buildToolboxJSON } from './utils'
 
 /**
@@ -33,7 +34,7 @@ const useBlockly = ({
   initialXml,
   toolboxConfiguration,
   workspaceConfiguration = {
-    readOnly: false,
+    readOnly: false
   },
   onWorkspaceChange,
   onImportXmlError,
@@ -41,16 +42,18 @@ const useBlockly = ({
   onDispose,
   customTheme,
   customTools,
+  useDefaultToolbox = false
 }) => {
   const [workspace, setWorkspace] = React.useState(null);
   const [xml, setXml] = React.useState(initialXml);
   const [didInitialImport, setDidInitialImport] = React.useState(false);
   const [didHandleNewWorkspace, setDidHandleNewWorkspace] = React.useState(false);
+  workspaceConfiguration = workspaceConfiguration || config.DEFAULT_WORKSPACE_JSON
+  toolboxConfiguration = useDefaultToolbox ? config.INITIAL_TOOLBOX_JSON : toolboxConfiguration
   const onInjectRef = React.useRef(onInject);
   const onDisposeRef = React.useRef(onDispose);
   const workspaceConfigurationRef = React.useRef(workspaceConfiguration);
   const toolboxConfigurationRef = React.useRef(toolboxConfiguration)
-
 
   /** Inject & Dispose ref init */
   React.useEffect(() => {
@@ -73,20 +76,21 @@ const useBlockly = ({
   React.useEffect(() => {
     try {
       /** Toolbox will not be initialized is workspace is readOnly */
-      if (!workspaceConfiguration.readOnly) {
+      if (workspaceConfiguration.readOnly !== true) {
         if (toolboxConfiguration && workspace) {
           toolboxConfigurationRef.current = toolboxConfiguration;
           workspace.updateToolbox(toolboxConfiguration);
         }
       }
     } catch (e) {
-      console.log('useBlockly (ERROR) ==> ', e)
+      console.error('From useBlockly ==> ', e)
     }
   }, [toolboxConfiguration, workspace]);
 
   React.useEffect(() => {
     /** Toolbox will not be initialized is workspace is readOnly */
-    if (!workspaceConfiguration.readOnly) {
+    if (workspaceConfiguration.readOnly !== true) {
+      console.log('CHECKING', customTools)
       try {
         (async () => {
           if (customTools) {
@@ -104,7 +108,7 @@ const useBlockly = ({
           }
         })()
       } catch (e) {
-        console.log('useBlockly (ERROR) ==> ', e)
+        console.error('From useBlockly ==> ', e)
       }
     }
   }, [customTools, workspace]);
@@ -143,7 +147,7 @@ const useBlockly = ({
           onDisposeFunction(newWorkspace);
         }
       } catch (e) {
-        console.log('useBlockly [ERROR]-->', e)
+        console.error('From useBlockly ==> ', e)
       }
     };
   }, [toolboxConfigurationRef]);
@@ -211,7 +215,7 @@ const useBlockly = ({
         workspace.setTheme(blocklyTheme)
       }
     } catch (e) {
-      console.log('useBlockly [ERROR]-->', e)
+      console.error('From useBlockly ==> ', e)
     }
   }, [customTheme, workspace])
 
