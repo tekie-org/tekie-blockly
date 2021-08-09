@@ -20,7 +20,10 @@
     "build": "react-scripts build",
     "lib:build": "rm -rf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepublishOnly": "babel src/lib --out-dir dist --copy-files",
+    "prepublish:watch": "babel src/lib --out-dir dist --copy-files",
+    "prepare": "npm run prepublishOnly"
   },
   "repository": {
     "type": "git",
