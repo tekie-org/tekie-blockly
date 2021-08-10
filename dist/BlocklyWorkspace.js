@@ -39,7 +39,8 @@ var propTypes = {
   onInject: _propTypes.default.func,
   onDispose: _propTypes.default.func,
   customTheme: _propTypes.default.any,
-  useDefaultToolbox: _propTypes.default.bool
+  useDefaultToolbox: _propTypes.default.bool,
+  shouldUpdateXML: _propTypes.default.bool
 };
 var defaultProps = {
   initialXml: null,
@@ -51,7 +52,8 @@ var defaultProps = {
   onInject: function onInject() {},
   onDispose: function onDispose() {},
   customTheme: null,
-  useDefaultToolbox: false
+  useDefaultToolbox: false,
+  shouldUpdateXML: false
 };
 
 function BlocklyWorkspace(_ref) {
@@ -67,7 +69,9 @@ function BlocklyWorkspace(_ref) {
       customTools = _ref.customTools,
       className = _ref.className,
       _ref$useDefaultToolbo = _ref.useDefaultToolbox,
-      useDefaultToolbox = _ref$useDefaultToolbo === void 0 ? false : _ref$useDefaultToolbo;
+      useDefaultToolbox = _ref$useDefaultToolbo === void 0 ? false : _ref$useDefaultToolbo,
+      _ref$shouldUpdateXML = _ref.shouldUpdateXML,
+      shouldUpdateXML = _ref$shouldUpdateXML === void 0 ? false : _ref$shouldUpdateXML;
 
   var editorDiv = _react.default.useRef(null);
 
@@ -83,7 +87,8 @@ function BlocklyWorkspace(_ref) {
     onInject: onInject,
     onDispose: onDispose,
     customTheme: customTheme,
-    useDefaultToolbox: useDefaultToolbox
+    useDefaultToolbox: useDefaultToolbox,
+    shouldUpdateXML: shouldUpdateXML
   }),
       _useBlockly2 = _slicedToArray(_useBlockly, 1),
       xml = _useBlockly2[0];

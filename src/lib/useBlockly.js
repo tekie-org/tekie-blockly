@@ -36,13 +36,14 @@ const useBlockly = ({
   workspaceConfiguration = {
     readOnly: false
   },
-  onWorkspaceChange,
-  onImportXmlError,
-  onInject,
-  onDispose,
+  onWorkspaceChange = () => {},
+  onImportXmlError = () => {},
+  onInject = () => {},
+  onDispose = () => {},
   customTheme,
   customTools,
-  useDefaultToolbox = false
+  useDefaultToolbox = false,
+  shouldUpdateXML = false
 }) => {
   const [workspace, setWorkspace] = React.useState(null);
   const [xml, setXml] = React.useState(initialXml);
@@ -67,6 +68,12 @@ const useBlockly = ({
   React.useEffect(() => {
     workspaceConfigurationRef.current = workspaceConfiguration;
   }, [workspaceConfiguration]);
+  
+  React.useEffect(() => {
+    if (typeof initialXml === 'string' && (initialXml !== xml) && shouldUpdateXML) {
+      setXml(initialXml)
+    }
+  }, [initialXml]);
 
   /** 
    * Toolbox configuration can be either a JSON from Blockly's official documentation 
@@ -90,7 +97,6 @@ const useBlockly = ({
   React.useEffect(() => {
     /** Toolbox will not be initialized is workspace is readOnly */
     if (workspaceConfiguration.readOnly !== true) {
-      console.log('CHECKING', customTools)
       try {
         (async () => {
           if (customTools) {
@@ -223,7 +229,7 @@ const useBlockly = ({
    * Initial Xml Changes
    */
   React.useEffect(() => {
-    if (xml && workspace && !didInitialImport) {
+    if (xml && workspace) {
       const success = importFromXml(xml, workspace, onImportXmlError);
       if (!success) {
         setXml(null);

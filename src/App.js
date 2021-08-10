@@ -30,7 +30,10 @@ import { BlocklyWorkspace } from './lib';
 };
   
 const App = () => {
+  const [newXml, setNewXML] = React.useState('<xml xmlns="http://www.w3.org/1999/xhtml"><block type="text" x="70" y="30"><field name="TEXT"></field></block></xml>')
   const workspaceConfiguration = {
+    readOnly: false,
+    horizontalLayout: true,
     grid: {
       spacing: 20,
       length: 3,
@@ -58,21 +61,26 @@ const App = () => {
     renderer: 'zelos'
   }
 
-  const onWorkspaceChange = (e) => {
-    console.log(e)
-  }
-
   return (
     <div className="App">
-      <div style={{ width: '100%', height: '100vh' }}>
+      <input value={newXml} onChange={(e) => {
+        setNewXML(e.target.value)
+      }} />
+      <div style={{ width: '100%', height: '90vh' }}>
         <BlocklyWorkspace
-          onWorkspaceChange={onWorkspaceChange}
+          useDefaultToolbox
+          shouldUpdateXML={false}
           workspaceConfiguration={workspaceConfiguration}
           onWorkspaceChange={(workspace) => {
-            console.log(Blockly.JavaScript.workspaceToCode(workspace))
+            console.log('WORKSAPCE', Blockly.JavaScript.workspaceToCode(workspace))
           }}
-          useDefaultToolbox
-          initialXml='<xml xmlns="http://www.w3.org/1999/xhtml"><block type="text" x="70" y="30"><field name="TEXT"></field></block></xml>'
+          onInject={(e) => {
+            console.log('INJECT', e)
+          }}
+          onXmlChange={(e) => {
+            console.log('XML', e)
+          }}
+          initialXml={newXml || ''}
         />
       </div>
     </div>
