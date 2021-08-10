@@ -1,5 +1,5 @@
 import React from 'react';
-import Blockly, { Block } from 'blockly';
+import Blockly from 'blockly';
 import debounce from './utils/debounce';
 import config from './defaultConfig'
 import { importFromXml, initCustomTools, buildToolboxJSON } from './utils'
