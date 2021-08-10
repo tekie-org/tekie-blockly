@@ -1,5 +1,7 @@
 "use strict";
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -7,9 +9,11 @@ exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _blockly = _interopRequireDefault(require("blockly"));
+var _blockly = _interopRequireWildcard(require("blockly"));
 
 var _debounce3 = _interopRequireDefault(require("./utils/debounce"));
+
+var _defaultConfig = _interopRequireDefault(require("./defaultConfig"));
 
 var _utils = require("./utils");
 
@@ -18,6 +22,10 @@ require("./customCategory");
 require("./customTheme");
 
 require("./customStyle.scss");
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -61,13 +69,24 @@ var useBlockly = function useBlockly(_ref) {
   var ref = _ref.ref,
       initialXml = _ref.initialXml,
       toolboxConfiguration = _ref.toolboxConfiguration,
-      workspaceConfiguration = _ref.workspaceConfiguration,
-      onWorkspaceChange = _ref.onWorkspaceChange,
-      onImportXmlError = _ref.onImportXmlError,
-      onInject = _ref.onInject,
-      onDispose = _ref.onDispose,
+      _ref$workspaceConfigu = _ref.workspaceConfiguration,
+      workspaceConfiguration = _ref$workspaceConfigu === void 0 ? {
+    readOnly: false
+  } : _ref$workspaceConfigu,
+      _ref$onWorkspaceChang = _ref.onWorkspaceChange,
+      onWorkspaceChange = _ref$onWorkspaceChang === void 0 ? function () {} : _ref$onWorkspaceChang,
+      _ref$onImportXmlError = _ref.onImportXmlError,
+      onImportXmlError = _ref$onImportXmlError === void 0 ? function () {} : _ref$onImportXmlError,
+      _ref$onInject = _ref.onInject,
+      onInject = _ref$onInject === void 0 ? function () {} : _ref$onInject,
+      _ref$onDispose = _ref.onDispose,
+      onDispose = _ref$onDispose === void 0 ? function () {} : _ref$onDispose,
       customTheme = _ref.customTheme,
-      customTools = _ref.customTools;
+      customTools = _ref.customTools,
+      _ref$useDefaultToolbo = _ref.useDefaultToolbox,
+      useDefaultToolbox = _ref$useDefaultToolbo === void 0 ? false : _ref$useDefaultToolbo,
+      _ref$shouldUpdateXML = _ref.shouldUpdateXML,
+      shouldUpdateXML = _ref$shouldUpdateXML === void 0 ? false : _ref$shouldUpdateXML;
 
   var _React$useState = _react.default.useState(null),
       _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -88,6 +107,9 @@ var useBlockly = function useBlockly(_ref) {
       _React$useState8 = _slicedToArray(_React$useState7, 2),
       didHandleNewWorkspace = _React$useState8[0],
       setDidHandleNewWorkspace = _React$useState8[1];
+
+  workspaceConfiguration = workspaceConfiguration || _defaultConfig.default.DEFAULT_WORKSPACE_JSON;
+  toolboxConfiguration = useDefaultToolbox ? _defaultConfig.default.INITIAL_TOOLBOX_JSON : toolboxConfiguration;
 
   var onInjectRef = _react.default.useRef(onInject);
 
@@ -112,6 +134,12 @@ var useBlockly = function useBlockly(_ref) {
   _react.default.useEffect(function () {
     workspaceConfigurationRef.current = workspaceConfiguration;
   }, [workspaceConfiguration]);
+
+  _react.default.useEffect(function () {
+    if (typeof initialXml === 'string' && initialXml !== xml && shouldUpdateXML) {
+      setXml(initialXml);
+    }
+  }, [initialXml]);
   /** 
    * Toolbox configuration can be either a JSON from Blockly's official documentation 
    * i.e @params toolboxConfiguration
@@ -122,20 +150,20 @@ var useBlockly = function useBlockly(_ref) {
   _react.default.useEffect(function () {
     try {
       /** Toolbox will not be initialized is workspace is readOnly */
-      if (!workspaceConfiguration.readOnly) {
+      if (workspaceConfiguration.readOnly !== true) {
         if (toolboxConfiguration && workspace) {
           toolboxConfigurationRef.current = toolboxConfiguration;
           workspace.updateToolbox(toolboxConfiguration);
         }
       }
     } catch (e) {
-      console.log('useBlockly (ERROR) ==> ', e);
+      console.error('From useBlockly ==> ', e);
     }
   }, [toolboxConfiguration, workspace]);
 
   _react.default.useEffect(function () {
     /** Toolbox will not be initialized is workspace is readOnly */
-    if (!workspaceConfiguration.readOnly) {
+    if (workspaceConfiguration.readOnly !== true) {
       try {
         _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
           var CustomToolboxJSON;
@@ -182,7 +210,7 @@ var useBlockly = function useBlockly(_ref) {
           }, _callee);
         }))();
       } catch (e) {
-        console.log('useBlockly (ERROR) ==> ', e);
+        console.error('From useBlockly ==> ', e);
       }
     }
   }, [customTools, workspace]);
@@ -223,7 +251,7 @@ var useBlockly = function useBlockly(_ref) {
           onDisposeFunction(newWorkspace);
         }
       } catch (e) {
-        console.log('useBlockly [ERROR]-->', e);
+        console.error('From useBlockly ==> ', e);
       }
     };
   }, [toolboxConfigurationRef]);
@@ -298,7 +326,7 @@ var useBlockly = function useBlockly(_ref) {
         workspace.setTheme(blocklyTheme);
       }
     } catch (e) {
-      console.log('useBlockly [ERROR]-->', e);
+      console.error('From useBlockly ==> ', e);
     }
   }, [customTheme, workspace]);
   /**
@@ -307,7 +335,7 @@ var useBlockly = function useBlockly(_ref) {
 
 
   _react.default.useEffect(function () {
-    if (xml && workspace && !didInitialImport) {
+    if (xml && workspace) {
       var success = (0, _utils.importFromXml)(xml, workspace, onImportXmlError);
 
       if (!success) {

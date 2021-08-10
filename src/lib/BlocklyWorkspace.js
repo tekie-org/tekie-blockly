@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import useBlockly from "./useBlockly";
-import ConfigFiles from './defaultConfig'
 
 const propTypes = {
   initialXml: PropTypes.string,
@@ -14,6 +13,8 @@ const propTypes = {
   onInject: PropTypes.func,
   onDispose: PropTypes.func,
   customTheme: PropTypes.any,
+  useDefaultToolbox: PropTypes.bool,
+  shouldUpdateXML: PropTypes.bool
 };
 
 const defaultProps = {
@@ -26,6 +27,8 @@ const defaultProps = {
   onInject: () => {},
   onDispose: () => {},
   customTheme: null,
+  useDefaultToolbox: false,
+  shouldUpdateXML: false
 };
 
 function BlocklyWorkspace({
@@ -39,21 +42,25 @@ function BlocklyWorkspace({
   onDispose,
   customTheme,
   customTools,
-  className
+  className,
+  useDefaultToolbox = false,
+  shouldUpdateXML = false,
 }) {
   const editorDiv = React.useRef(null);
   const [ xml ] = useBlockly({
     ref: editorDiv,
     initialXml,
-    toolboxConfiguration: toolboxConfiguration || ConfigFiles.INITIAL_TOOLBOX_JSON,
-    customTools: customTools,
+    toolboxConfiguration,
+    customTools,
     workspaceConfiguration,
     onWorkspaceChange,
     onXmlChange,
     onImportXmlError,
     onInject,
     onDispose,
-    customTheme: customTheme,
+    customTheme,
+    useDefaultToolbox,
+    shouldUpdateXML
   });
 
   const onXmlChangeRef = React.useRef(onXmlChange);

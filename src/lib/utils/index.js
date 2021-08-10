@@ -8,6 +8,11 @@ import Blockly from 'blockly';
  */
 export const importFromXml = (xml, workspace, onImportXmlError) => {
   try {
+    if (Blockly && Blockly.mainWorkspace) {
+      console.log('From Blockly ==> Workspace Cleared')
+      Blockly.mainWorkspace.clear()
+    }
+    console.log('From Blockly ==> XML Rendererd')
     Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
     return true;
   } catch (e) {

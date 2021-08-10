@@ -17,6 +17,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 var importFromXml = function importFromXml(xml, workspace, onImportXmlError) {
   try {
+    if (_blockly.default && _blockly.default.mainWorkspace) {
+      console.log('From Blockly ==> Workspace Cleared');
+
+      _blockly.default.mainWorkspace.clear();
+    }
+
+    console.log('From Blockly ==> XML Rendererd');
+
     _blockly.default.Xml.domToWorkspace(_blockly.default.Xml.textToDom(xml), workspace);
 
     return true;

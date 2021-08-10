@@ -1,6 +1,7 @@
 import React from 'react';
-import Blockly from 'blockly';
+import Blockly, { Block } from 'blockly';
 import debounce from './utils/debounce';
+import config from './defaultConfig'
 import { importFromXml, initCustomTools, buildToolboxJSON } from './utils'
 
 /**
@@ -33,24 +34,27 @@ const useBlockly = ({
   initialXml,
   toolboxConfiguration,
   workspaceConfiguration = {
-    readOnly: false,
+    readOnly: false
   },
-  onWorkspaceChange,
-  onImportXmlError,
-  onInject,
-  onDispose,
+  onWorkspaceChange = () => {},
+  onImportXmlError = () => {},
+  onInject = () => {},
+  onDispose = () => {},
   customTheme,
   customTools,
+  useDefaultToolbox = false,
+  shouldUpdateXML = false
 }) => {
   const [workspace, setWorkspace] = React.useState(null);
   const [xml, setXml] = React.useState(initialXml);
   const [didInitialImport, setDidInitialImport] = React.useState(false);
   const [didHandleNewWorkspace, setDidHandleNewWorkspace] = React.useState(false);
+  workspaceConfiguration = workspaceConfiguration || config.DEFAULT_WORKSPACE_JSON
+  toolboxConfiguration = useDefaultToolbox ? config.INITIAL_TOOLBOX_JSON : toolboxConfiguration
   const onInjectRef = React.useRef(onInject);
   const onDisposeRef = React.useRef(onDispose);
   const workspaceConfigurationRef = React.useRef(workspaceConfiguration);
   const toolboxConfigurationRef = React.useRef(toolboxConfiguration)
-
 
   /** Inject & Dispose ref init */
   React.useEffect(() => {
@@ -66,7 +70,7 @@ const useBlockly = ({
   }, [workspaceConfiguration]);
   
   React.useEffect(() => {
-    if (typeof initialXml === 'string') {
+    if (typeof initialXml === 'string' && (initialXml !== xml) && shouldUpdateXML) {
       setXml(initialXml)
     }
   }, [initialXml]);
@@ -79,14 +83,14 @@ const useBlockly = ({
   React.useEffect(() => {
     try {
       /** Toolbox will not be initialized is workspace is readOnly */
-      if (!workspaceConfiguration.readOnly) {
+      if (workspaceConfiguration.readOnly !== true) {
         if (toolboxConfiguration && workspace) {
           toolboxConfigurationRef.current = toolboxConfiguration;
           workspace.updateToolbox(toolboxConfiguration);
         }
       }
     } catch (e) {
-      console.log('useBlockly (ERROR) ==> ', e)
+      console.error('From useBlockly ==> ', e)
     }
   }, [toolboxConfiguration, workspace]);
 
@@ -110,7 +114,7 @@ const useBlockly = ({
           }
         })()
       } catch (e) {
-        console.log('useBlockly (ERROR) ==> ', e)
+        console.error('From useBlockly ==> ', e)
       }
     }
   }, [customTools, workspace]);
@@ -149,7 +153,7 @@ const useBlockly = ({
           onDisposeFunction(newWorkspace);
         }
       } catch (e) {
-        console.log('useBlockly [ERROR]-->', e)
+        console.error('From useBlockly ==> ', e)
       }
     };
   }, [toolboxConfigurationRef]);
@@ -217,7 +221,7 @@ const useBlockly = ({
         workspace.setTheme(blocklyTheme)
       }
     } catch (e) {
-      console.log('useBlockly [ERROR]-->', e)
+      console.error('From useBlockly ==> ', e)
     }
   }, [customTheme, workspace])
 
@@ -225,7 +229,7 @@ const useBlockly = ({
    * Initial Xml Changes
    */
   React.useEffect(() => {
-    if (xml && workspace && !didInitialImport) {
+    if (xml && workspace) {
       const success = importFromXml(xml, workspace, onImportXmlError);
       if (!success) {
         setXml(null);
