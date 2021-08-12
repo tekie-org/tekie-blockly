@@ -41,7 +41,7 @@ const useBlockly = ({
   onInject = () => {},
   onDispose = () => {},
   customTheme,
-  customTools,
+  customTools = [],
   useDefaultToolbox = false,
   shouldUpdateXML = false
 }) => {
@@ -69,11 +69,6 @@ const useBlockly = ({
     workspaceConfigurationRef.current = workspaceConfiguration;
   }, [workspaceConfiguration]);
   
-  React.useEffect(() => {
-    if (typeof initialXml === 'string' && (initialXml !== xml) && shouldUpdateXML) {
-      setXml(initialXml)
-    }
-  }, [initialXml]);
 
   /** 
    * Toolbox configuration can be either a JSON from Blockly's official documentation 
@@ -83,11 +78,9 @@ const useBlockly = ({
   React.useEffect(() => {
     try {
       /** Toolbox will not be initialized is workspace is readOnly */
-      if (workspaceConfiguration.readOnly !== true) {
-        if (toolboxConfiguration && workspace) {
-          toolboxConfigurationRef.current = toolboxConfiguration;
-          workspace.updateToolbox(toolboxConfiguration);
-        }
+      if (toolboxConfiguration && workspace) {
+        toolboxConfigurationRef.current = toolboxConfiguration;
+        workspace.updateToolbox(toolboxConfiguration);
       }
     } catch (e) {
       console.error('From useBlockly ==> ', e)
@@ -96,26 +89,24 @@ const useBlockly = ({
 
   React.useEffect(() => {
     /** Toolbox will not be initialized is workspace is readOnly */
-    if (workspaceConfiguration.readOnly !== true) {
-      try {
-        (async () => {
-          if (customTools) {
-            await initCustomTools(customTools)
-            const CustomToolboxJSON = await buildToolboxJSON(customTools)
-            if (CustomToolboxJSON && workspace) {
-              if (toolboxConfigurationRef.current && toolboxConfigurationRef.current.kind !== CustomToolboxJSON.kind) {
-                /** Blockly doesn't support dynamic change of toolbox mode i.e it can be either of kind flyout or category */
-                throw new Error('Cannot Change Toolbox Mode')
-              } else {
-                workspace.updateToolbox(CustomToolboxJSON);
-                toolboxConfigurationRef.current = CustomToolboxJSON;
-              }
+    try {
+      (async () => {
+        if (customTools && customTools.length) {
+          await initCustomTools(customTools)
+          const CustomToolboxJSON = await buildToolboxJSON(customTools)
+          if (CustomToolboxJSON && workspace) {
+            if (toolboxConfigurationRef.current && toolboxConfigurationRef.current.kind !== CustomToolboxJSON.kind) {
+              /** Blockly doesn't support dynamic change of toolbox mode i.e it can be either of kind flyout or category */
+              throw new Error('Cannot Change Toolbox Mode')
+            } else {
+              workspace.updateToolbox(CustomToolboxJSON);
+              toolboxConfigurationRef.current = CustomToolboxJSON;
             }
           }
-        })()
-      } catch (e) {
-        console.error('From useBlockly ==> ', e)
-      }
+        }
+      })()
+    } catch (e) {
+      console.error('From useBlockly ==> ', e)
     }
   }, [customTools, workspace]);
 
@@ -229,7 +220,7 @@ const useBlockly = ({
    * Initial Xml Changes
    */
   React.useEffect(() => {
-    if (xml && workspace) {
+    if (xml && workspace && !didInitialImport) {
       const success = importFromXml(xml, workspace, onImportXmlError);
       if (!success) {
         setXml(null);

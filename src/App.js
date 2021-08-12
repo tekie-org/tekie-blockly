@@ -1,36 +1,54 @@
+/**
+ * Note: This is just a debug playground, 
+ * for using useBlockly hook and BlocklyWorkspace Component 
+ */
 import React from 'react'
 import Blockly from 'blockly'
 import { BlocklyWorkspace } from './lib';
 
- const demoBlock =  {
-  name: 'demoBlock',
+ const check2 =  {
+  name: 'check1',
   category: 'Blocks',
   block: {
     init: function () {
       this.jsonInit({
-        message0: 'Hello %1',
-        args0: [
+        "message0": "%1 %2",
+        "args0": [
           {
-            type: 'field_input',
-            name: 'NAME',
-            check: 'String',
+            "type": "field_dropdown",
+            "name": "CHECKING",
+            "options": [
+              [
+                "1",
+                "1"
+              ],
+              [
+                "2",
+                "2"
+              ],
+              [
+                "3",
+                "3"
+              ]
+            ]
           },
+          {
+            "type": "input_statement",
+            "name": "CHECKING",
+            "check": "Boolean"
+          }
         ],
-        output: 'String',
-        colour: 160,
-        tooltip: 'Says Hello',
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
       });
     },
-  },
-  generator: (block) => {
-    const message = `'${block.getFieldValue('NAME')}'` || '\'\'';
-    const code = `console.log('Hello ${message}')`;
-    return [code, Blockly.JavaScript.ORDER_MEMBER];
   },
 };
   
 const App = () => {
-  const [newXml, setNewXML] = React.useState('<xml xmlns="http://www.w3.org/1999/xhtml"><block type="text" x="70" y="30"><field name="TEXT"></field></block></xml>')
+  const [newXml, setNewXML] = React.useState('')
+  const [newBlocks, setNewBlocks] = React.useState(check2)
   const workspaceConfiguration = {
     readOnly: false,
     horizontalLayout: true,
@@ -61,18 +79,28 @@ const App = () => {
     renderer: 'zelos'
   }
 
+  React.useEffect(() => {
+    console.log('CHECKINED', {Blockly, windowWorkspace: window.OneWorkspace })
+  }, [window])
+
   return (
     <div className="App">
       <input value={newXml} onChange={(e) => {
         setNewXML(e.target.value)
       }} />
+      <input value={JSON.stringify(newBlocks)} onChange={(e) => {
+        if (JSON.parse(e.target.value)) {
+          setNewBlocks(JSON.parse(e.target.value))
+        }
+      }} />
       <div style={{ width: '100%', height: '90vh' }}>
         <BlocklyWorkspace
+          shouldUpdateXML
           useDefaultToolbox
-          shouldUpdateXML={false}
+          customTools={[newBlocks]}
           workspaceConfiguration={workspaceConfiguration}
           onWorkspaceChange={(workspace) => {
-            console.log('WORKSAPCE', Blockly.JavaScript.workspaceToCode(workspace))
+            // console.log('WORKSAPCE', Blockly.JavaScript.workspaceToCode(workspace))
           }}
           onInject={(e) => {
             console.log('INJECT', e)
@@ -81,6 +109,7 @@ const App = () => {
             console.log('XML', e)
           }}
           initialXml={newXml || ''}
+          blocklyKey='One'
         />
       </div>
     </div>
