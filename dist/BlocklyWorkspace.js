@@ -42,7 +42,6 @@ var propTypes = {
   onDispose: _propTypes.default.func,
   customTheme: _propTypes.default.any,
   useDefaultToolbox: _propTypes.default.bool,
-  shouldUpdateXML: _propTypes.default.bool,
   blocklyKey: _propTypes.default.string
 };
 var defaultProps = {
@@ -56,7 +55,6 @@ var defaultProps = {
   onDispose: function onDispose() {},
   customTheme: null,
   useDefaultToolbox: false,
-  shouldUpdateXML: false,
   blocklyKey: null
 };
 
@@ -74,8 +72,6 @@ function BlocklyWorkspace(_ref) {
       className = _ref.className,
       _ref$useDefaultToolbo = _ref.useDefaultToolbox,
       useDefaultToolbox = _ref$useDefaultToolbo === void 0 ? false : _ref$useDefaultToolbo,
-      _ref$shouldUpdateXML = _ref.shouldUpdateXML,
-      shouldUpdateXML = _ref$shouldUpdateXML === void 0 ? false : _ref$shouldUpdateXML,
       _ref$blocklyKey = _ref.blocklyKey,
       blocklyKey = _ref$blocklyKey === void 0 ? null : _ref$blocklyKey;
 
@@ -93,8 +89,7 @@ function BlocklyWorkspace(_ref) {
     onInject: onInject,
     onDispose: onDispose,
     customTheme: customTheme,
-    useDefaultToolbox: useDefaultToolbox,
-    shouldUpdateXML: shouldUpdateXML
+    useDefaultToolbox: useDefaultToolbox
   }),
       _useBlockly2 = _slicedToArray(_useBlockly, 2),
       workspace = _useBlockly2[0],

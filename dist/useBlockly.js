@@ -79,9 +79,7 @@ var useBlockly = function useBlockly(_ref) {
       _ref$customTools = _ref.customTools,
       customTools = _ref$customTools === void 0 ? [] : _ref$customTools,
       _ref$useDefaultToolbo = _ref.useDefaultToolbox,
-      useDefaultToolbox = _ref$useDefaultToolbo === void 0 ? false : _ref$useDefaultToolbo,
-      _ref$shouldUpdateXML = _ref.shouldUpdateXML,
-      shouldUpdateXML = _ref$shouldUpdateXML === void 0 ? false : _ref$shouldUpdateXML;
+      useDefaultToolbox = _ref$useDefaultToolbo === void 0 ? false : _ref$useDefaultToolbo;
 
   var _React$useState = _react.default.useState(null),
       _React$useState2 = _slicedToArray(_React$useState, 2),
