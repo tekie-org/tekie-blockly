@@ -95,7 +95,6 @@ const App = () => {
       }} />
       <div style={{ width: '100%', height: '90vh' }}>
         <BlocklyWorkspace
-          shouldUpdateXML
           useDefaultToolbox
           customTools={[newBlocks]}
           workspaceConfiguration={workspaceConfiguration}

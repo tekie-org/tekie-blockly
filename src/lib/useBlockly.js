@@ -43,7 +43,6 @@ const useBlockly = ({
   customTheme,
   customTools = [],
   useDefaultToolbox = false,
-  shouldUpdateXML = false
 }) => {
   const [workspace, setWorkspace] = React.useState(null);
   const [xml, setXml] = React.useState(initialXml);
@@ -68,7 +67,7 @@ const useBlockly = ({
   React.useEffect(() => {
     workspaceConfigurationRef.current = workspaceConfiguration;
   }, [workspaceConfiguration]);
-  
+
 
   /** 
    * Toolbox configuration can be either a JSON from Blockly's official documentation 
