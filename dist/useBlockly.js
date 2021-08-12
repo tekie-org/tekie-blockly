@@ -1,7 +1,5 @@
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -9,7 +7,7 @@ exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _blockly = _interopRequireWildcard(require("blockly"));
+var _blockly = _interopRequireDefault(require("blockly"));
 
 var _debounce3 = _interopRequireDefault(require("./utils/debounce"));
 
@@ -22,10 +20,6 @@ require("./customCategory");
 require("./customTheme");
 
 require("./customStyle.scss");
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -82,11 +76,10 @@ var useBlockly = function useBlockly(_ref) {
       _ref$onDispose = _ref.onDispose,
       onDispose = _ref$onDispose === void 0 ? function () {} : _ref$onDispose,
       customTheme = _ref.customTheme,
-      customTools = _ref.customTools,
+      _ref$customTools = _ref.customTools,
+      customTools = _ref$customTools === void 0 ? [] : _ref$customTools,
       _ref$useDefaultToolbo = _ref.useDefaultToolbox,
-      useDefaultToolbox = _ref$useDefaultToolbo === void 0 ? false : _ref$useDefaultToolbo,
-      _ref$shouldUpdateXML = _ref.shouldUpdateXML,
-      shouldUpdateXML = _ref$shouldUpdateXML === void 0 ? false : _ref$shouldUpdateXML;
+      useDefaultToolbox = _ref$useDefaultToolbo === void 0 ? false : _ref$useDefaultToolbo;
 
   var _React$useState = _react.default.useState(null),
       _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -134,12 +127,6 @@ var useBlockly = function useBlockly(_ref) {
   _react.default.useEffect(function () {
     workspaceConfigurationRef.current = workspaceConfiguration;
   }, [workspaceConfiguration]);
-
-  _react.default.useEffect(function () {
-    if (typeof initialXml === 'string' && initialXml !== xml && shouldUpdateXML) {
-      setXml(initialXml);
-    }
-  }, [initialXml]);
   /** 
    * Toolbox configuration can be either a JSON from Blockly's official documentation 
    * i.e @params toolboxConfiguration
@@ -150,11 +137,9 @@ var useBlockly = function useBlockly(_ref) {
   _react.default.useEffect(function () {
     try {
       /** Toolbox will not be initialized is workspace is readOnly */
-      if (workspaceConfiguration.readOnly !== true) {
-        if (toolboxConfiguration && workspace) {
-          toolboxConfigurationRef.current = toolboxConfiguration;
-          workspace.updateToolbox(toolboxConfiguration);
-        }
+      if (toolboxConfiguration && workspace) {
+        toolboxConfigurationRef.current = toolboxConfiguration;
+        workspace.updateToolbox(toolboxConfiguration);
       }
     } catch (e) {
       console.error('From useBlockly ==> ', e);
@@ -163,55 +148,53 @@ var useBlockly = function useBlockly(_ref) {
 
   _react.default.useEffect(function () {
     /** Toolbox will not be initialized is workspace is readOnly */
-    if (workspaceConfiguration.readOnly !== true) {
-      try {
-        _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-          var CustomToolboxJSON;
-          return regeneratorRuntime.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  if (!customTools) {
-                    _context.next = 13;
-                    break;
-                  }
+    try {
+      _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var CustomToolboxJSON;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(customTools && customTools.length)) {
+                  _context.next = 13;
+                  break;
+                }
 
-                  _context.next = 3;
-                  return (0, _utils.initCustomTools)(customTools);
+                _context.next = 3;
+                return (0, _utils.initCustomTools)(customTools);
 
-                case 3:
-                  _context.next = 5;
-                  return (0, _utils.buildToolboxJSON)(customTools);
+              case 3:
+                _context.next = 5;
+                return (0, _utils.buildToolboxJSON)(customTools);
 
-                case 5:
-                  CustomToolboxJSON = _context.sent;
+              case 5:
+                CustomToolboxJSON = _context.sent;
 
-                  if (!(CustomToolboxJSON && workspace)) {
-                    _context.next = 13;
-                    break;
-                  }
+                if (!(CustomToolboxJSON && workspace)) {
+                  _context.next = 13;
+                  break;
+                }
 
-                  if (!(toolboxConfigurationRef.current && toolboxConfigurationRef.current.kind !== CustomToolboxJSON.kind)) {
-                    _context.next = 11;
-                    break;
-                  }
+                if (!(toolboxConfigurationRef.current && toolboxConfigurationRef.current.kind !== CustomToolboxJSON.kind)) {
+                  _context.next = 11;
+                  break;
+                }
 
-                  throw new Error('Cannot Change Toolbox Mode');
+                throw new Error('Cannot Change Toolbox Mode');
 
-                case 11:
-                  workspace.updateToolbox(CustomToolboxJSON);
-                  toolboxConfigurationRef.current = CustomToolboxJSON;
+              case 11:
+                workspace.updateToolbox(CustomToolboxJSON);
+                toolboxConfigurationRef.current = CustomToolboxJSON;
 
-                case 13:
-                case "end":
-                  return _context.stop();
-              }
+              case 13:
+              case "end":
+                return _context.stop();
             }
-          }, _callee);
-        }))();
-      } catch (e) {
-        console.error('From useBlockly ==> ', e);
-      }
+          }
+        }, _callee);
+      }))();
+    } catch (e) {
+      console.error('From useBlockly ==> ', e);
     }
   }, [customTools, workspace]);
   /** Trigger when workspace changes helpful in executing code of given blocks */
@@ -335,7 +318,7 @@ var useBlockly = function useBlockly(_ref) {
 
 
   _react.default.useEffect(function () {
-    if (xml && workspace) {
+    if (xml && workspace && !didInitialImport) {
       var success = (0, _utils.importFromXml)(xml, workspace, onImportXmlError);
 
       if (!success) {

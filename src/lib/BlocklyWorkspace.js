@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Blockly from "blockly";
 import useBlockly from "./useBlockly";
 
 const propTypes = {
@@ -14,7 +15,7 @@ const propTypes = {
   onDispose: PropTypes.func,
   customTheme: PropTypes.any,
   useDefaultToolbox: PropTypes.bool,
-  shouldUpdateXML: PropTypes.bool
+  blocklyKey: PropTypes.string,
 };
 
 const defaultProps = {
@@ -28,9 +29,8 @@ const defaultProps = {
   onDispose: () => {},
   customTheme: null,
   useDefaultToolbox: false,
-  shouldUpdateXML: false
+  blocklyKey: null
 };
-
 function BlocklyWorkspace({
   initialXml,
   toolboxConfiguration,
@@ -44,10 +44,10 @@ function BlocklyWorkspace({
   customTools,
   className,
   useDefaultToolbox = false,
-  shouldUpdateXML = false,
+  blocklyKey = null
 }) {
   const editorDiv = React.useRef(null);
-  const [ xml ] = useBlockly({
+  const [ workspace, xml ] = useBlockly({
     ref: editorDiv,
     initialXml,
     toolboxConfiguration,
@@ -59,8 +59,7 @@ function BlocklyWorkspace({
     onInject,
     onDispose,
     customTheme,
-    useDefaultToolbox,
-    shouldUpdateXML
+    useDefaultToolbox
   });
 
   const onXmlChangeRef = React.useRef(onXmlChange);
@@ -72,6 +71,13 @@ function BlocklyWorkspace({
       onXmlChangeRef.current(xml);
     }
   }, [xml]);
+
+  React.useEffect(() => {
+    if (workspace && blocklyKey) {
+      window[`${blocklyKey}Workspace`] = workspace
+      window[`${blocklyKey}Blockly`] = Blockly
+    }
+  }, [workspace]);
 
   return <div className={className} ref={editorDiv} style={{ width: '100%', height: '100%' }} />;
 }

@@ -9,6 +9,8 @@ var _react = _interopRequireDefault(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
+var _blockly = _interopRequireDefault(require("blockly"));
+
 var _useBlockly3 = _interopRequireDefault(require("./useBlockly"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -40,7 +42,7 @@ var propTypes = {
   onDispose: _propTypes.default.func,
   customTheme: _propTypes.default.any,
   useDefaultToolbox: _propTypes.default.bool,
-  shouldUpdateXML: _propTypes.default.bool
+  blocklyKey: _propTypes.default.string
 };
 var defaultProps = {
   initialXml: null,
@@ -53,7 +55,7 @@ var defaultProps = {
   onDispose: function onDispose() {},
   customTheme: null,
   useDefaultToolbox: false,
-  shouldUpdateXML: false
+  blocklyKey: null
 };
 
 function BlocklyWorkspace(_ref) {
@@ -70,8 +72,8 @@ function BlocklyWorkspace(_ref) {
       className = _ref.className,
       _ref$useDefaultToolbo = _ref.useDefaultToolbox,
       useDefaultToolbox = _ref$useDefaultToolbo === void 0 ? false : _ref$useDefaultToolbo,
-      _ref$shouldUpdateXML = _ref.shouldUpdateXML,
-      shouldUpdateXML = _ref$shouldUpdateXML === void 0 ? false : _ref$shouldUpdateXML;
+      _ref$blocklyKey = _ref.blocklyKey,
+      blocklyKey = _ref$blocklyKey === void 0 ? null : _ref$blocklyKey;
 
   var editorDiv = _react.default.useRef(null);
 
@@ -87,11 +89,11 @@ function BlocklyWorkspace(_ref) {
     onInject: onInject,
     onDispose: onDispose,
     customTheme: customTheme,
-    useDefaultToolbox: useDefaultToolbox,
-    shouldUpdateXML: shouldUpdateXML
+    useDefaultToolbox: useDefaultToolbox
   }),
-      _useBlockly2 = _slicedToArray(_useBlockly, 1),
-      xml = _useBlockly2[0];
+      _useBlockly2 = _slicedToArray(_useBlockly, 2),
+      workspace = _useBlockly2[0],
+      xml = _useBlockly2[1];
 
   var onXmlChangeRef = _react.default.useRef(onXmlChange);
 
@@ -104,6 +106,13 @@ function BlocklyWorkspace(_ref) {
       onXmlChangeRef.current(xml);
     }
   }, [xml]);
+
+  _react.default.useEffect(function () {
+    if (workspace && blocklyKey) {
+      window["".concat(blocklyKey, "Workspace")] = workspace;
+      window["".concat(blocklyKey, "Blockly")] = _blockly.default;
+    }
+  }, [workspace]);
 
   return /*#__PURE__*/_react.default.createElement("div", {
     className: className,
