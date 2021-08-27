@@ -47,11 +47,8 @@ import { BlocklyWorkspace } from './lib';
 };
   
 const App = () => {
-  const [newXml, setNewXML] = React.useState('')
-  const [newBlocks, setNewBlocks] = React.useState(check2)
   const workspaceConfiguration = {
     readOnly: false,
-    horizontalLayout: true,
     grid: {
       spacing: 20,
       length: 3,
@@ -80,23 +77,15 @@ const App = () => {
   }
 
   React.useEffect(() => {
-    console.log('CHECKINED', {Blockly, windowWorkspace: window.OneWorkspace })
+    console.log('CHECKING', {Blockly, windowWorkspace: window.OneWorkspace })
   }, [window])
 
   return (
     <div className="App">
-      <input value={newXml} onChange={(e) => {
-        setNewXML(e.target.value)
-      }} />
-      <input value={JSON.stringify(newBlocks)} onChange={(e) => {
-        if (JSON.parse(e.target.value)) {
-          setNewBlocks(JSON.parse(e.target.value))
-        }
-      }} />
       <div style={{ width: '100%', height: '90vh' }}>
         <BlocklyWorkspace
           useDefaultToolbox
-          customTools={[newBlocks]}
+          // customTools={[check2]}
           workspaceConfiguration={workspaceConfiguration}
           onWorkspaceChange={(workspace) => {
             // console.log('WORKSAPCE', Blockly.JavaScript.workspaceToCode(workspace))
@@ -107,7 +96,7 @@ const App = () => {
           onXmlChange={(e) => {
             console.log('XML', e)
           }}
-          initialXml={newXml || ''}
+          initialXml={''}
           blocklyKey='One'
         />
       </div>

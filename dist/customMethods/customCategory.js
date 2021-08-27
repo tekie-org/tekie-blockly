@@ -1,0 +1,7 @@
+function _inheritsLoose(a,b){a.prototype=Object.create(b.prototype),a.prototype.constructor=a,_setPrototypeOf(a,b)}function _setPrototypeOf(a,b){return _setPrototypeOf=Object.setPrototypeOf||function _setPrototypeOf(a,b){return a.__proto__=b,a},_setPrototypeOf(a,b)}import Blockly from"blockly";var CustomCategory=/*#__PURE__*/function(a){/**
+   * Constructor for a custom category.
+   * @override
+   */function CustomCategory(b,c,d){return a.call(this,b,c,d)||this}/** @override */_inheritsLoose(CustomCategory,a);var b=CustomCategory.prototype;return b.addColourBorder_=function addColourBorder_(a){this.rowDiv_.style.backgroundColor=a}/** @override */,b.setSelected=function setSelected(a){// We do not store the label span on the category, so use getElementsByClassName.
+var b=this.rowDiv_.getElementsByClassName("blocklyTreeLabel")[0];a?(this.rowDiv_.style.backgroundColor="#005673",this.rowDiv_.style.boxShadow="2px 4px 10px rgba(0,0,0,0.3)",b.style.color=this.colour_):(this.rowDiv_.style.backgroundColor=this.colour_,this.rowDiv_.style.boxShadow="none",b.style.color="#005673"),Blockly.utils.aria.setState(this.htmlDiv_,Blockly.utils.aria.State.SELECTED,a)},CustomCategory}(Blockly.ToolboxCategory);/**
+ * Custom methods must be registered for applying changes in Blockly  
+ */export{CustomCategory as default};Blockly.registry.register(Blockly.registry.Type.TOOLBOX_ITEM,Blockly.ToolboxCategory.registrationName,CustomCategory,!0);

@@ -16,6 +16,7 @@ const propTypes = {
   customTheme: PropTypes.any,
   useDefaultToolbox: PropTypes.bool,
   blocklyKey: PropTypes.string,
+  toolboxMode: PropTypes.oneOf(['default'])
 };
 
 const defaultProps = {
@@ -29,8 +30,28 @@ const defaultProps = {
   onDispose: () => {},
   customTheme: null,
   useDefaultToolbox: false,
-  blocklyKey: null
+  blocklyKey: null,
+  toolboxMode: null
 };
+
+/**
+ * ~ Blockly React Component
+ * @param initialXml Initial Blocks to show in workpace (This have to be in XML format)
+ * @param toolboxConfiguration toolbox configuration from blockly's official documentation 
+ * @param workspaceConfiguration self explanatory refer: https://developers.google.com/blockly/guides/configure/web/configuration_struct
+ * @param onWorkspaceChange self explanatory 
+ * @param onXmlChange
+ * @param onImportXmlError
+ * @param onDispose
+ * @param onInject
+ * @param customTheme self explanatory 
+ * @param customTools custom toolbox configration, format -> { name, category, block, generator }
+ * @param className
+ * @param useDefaultToolbox
+ * @param blocklyKey
+ * @param toolboxMode - default |
+ * @returns React El ~ Blockly Workspace
+ */
 function BlocklyWorkspace({
   initialXml,
   toolboxConfiguration,
@@ -44,7 +65,8 @@ function BlocklyWorkspace({
   customTools,
   className,
   useDefaultToolbox = false,
-  blocklyKey = null
+  blocklyKey = null,
+  toolboxMode = null
 }) {
   const editorDiv = React.useRef(null);
   const [ workspace, xml ] = useBlockly({
@@ -59,7 +81,8 @@ function BlocklyWorkspace({
     onInject,
     onDispose,
     customTheme,
-    useDefaultToolbox
+    useDefaultToolbox,
+    toolboxMode
   });
 
   const onXmlChangeRef = React.useRef(onXmlChange);
