@@ -1,8 +1,16 @@
 {
   "presets": [
     [
+      "minify", 
+      {
+        "keepFnName": true
+      }
+    ],
+    [
       "@babel/preset-env",
       {
+        "loose": true,
+        "modules": false,
         "targets": "> 0.25%, not dead"
       }
     ],

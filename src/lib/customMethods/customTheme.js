@@ -1,10 +1,9 @@
-"use strict";
+import Blockly from 'blockly'
 
-var _blockly = _interopRequireDefault(require("blockly"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var defaultBlockStyles = {
+/**
+ * Tekie Theme
+ */
+const TekieDefaultBlockStyles = {
   "colour_blocks": {
     "colourPrimary": "20"
   },
@@ -37,7 +36,8 @@ var defaultBlockStyles = {
     "hat": "cap"
   }
 };
-var categoryStyles = {
+
+const categoryStyles = {
   "colour_category": {
     "colour": "20"
   },
@@ -66,33 +66,42 @@ var categoryStyles = {
     "colour": "310"
   }
 };
-var componentStyles = {
-  "workspaceBackgroundColour": "#00171f",
-  "toolboxBackgroundColour": "#3eaec1",
+
+const componentStyles = {
+  "workspaceBackgroundColour": "#012A38",
+  "toolboxBackgroundColour": "#D7FAFB",
   "toolboxForegroundColour": "#FFF",
   "flyoutBackgroundColour": "#015f7c",
   "flyoutForegroundColour": "#FFF",
   "flyoutOpacity": ".6",
   "scrollbarColour": "",
-  "scrollbarOpacity": "",
+  "scrollbarOpacity": "0.5",
   "insertionMarkerColour": "",
   "insertionMarkerOpacity": "",
   "markerColour": "",
-  "cursorColour": "red"
+  "cursorColour": "",
 };
-var fontStyles = {
+
+const fontStyles = {
   "family": "Nunito, sans-serif",
   "weight": "normal",
   "size": 12
 };
 
-if (!_blockly.default.Theme.TekiePrimary) {
-  _blockly.default.Theme.TekiePrimary = _blockly.default.Theme.defineTheme('TekiePrimary', {
-    // 'base': ,
-    'blockStyles': defaultBlockStyles,
+const BlocklyThemes = {
+  TekiePrimary: {
+    'blockStyles': TekieDefaultBlockStyles,
     'categoryStyles': categoryStyles,
     'componentStyles': componentStyles,
     'fontStyle': fontStyles,
     'startHats': true
-  });
+  }
+}
+
+if (BlocklyThemes && Object.keys(BlocklyThemes).length) {
+  Object.keys(BlocklyThemes).forEach(theme => {
+    if (!Blockly.Theme[theme]) {
+      Blockly.Theme[theme] = Blockly.Theme.defineTheme(theme, BlocklyThemes[theme]);
+    }
+  })
 }

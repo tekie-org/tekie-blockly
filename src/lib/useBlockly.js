@@ -1,14 +1,15 @@
 import React from 'react';
 import Blockly from 'blockly';
 import debounce from './utils/debounce';
-import config from './defaultConfig'
+import config from './utils/defaultConfig'
+import TOOLBOX_JSON from './CustomToolboxJSON';
 import { importFromXml, initCustomTools, buildToolboxJSON } from './utils'
 
 /**
  * Custom Category & Theme For Blockly
  */
-import './customCategory'
-import './customTheme'
+import './customMethods/customCategory'
+import './customMethods/customTheme'
 
 /**
  * Overide Blockly's Toolbox & Workspace Styles
@@ -20,13 +21,15 @@ import './customStyle.scss'
  * @param ref Workspace Div Reference
  * @param initialXml Initial Blocks to show in workpace (This have to be in XML format)
  * @param toolboxConfiguration toolbox configuration from blockly's official documentation 
- * @param customTools custom toolbox configration, format -> { name, category, block, generator }
  * @param workspaceConfiguration self explanatory refer: https://developers.google.com/blockly/guides/configure/web/configuration_struct
- * @param onWorkspaceChange self explanatory 
+ * @param customTools custom toolbox configration, format -> { name, category, block, generator }
  * @param customTheme self explanatory 
+ * @param onWorkspaceChange self explanatory 
  * @param onImportXmlError
  * @param onInject
  * @param onDispose
+ * @param useDefaultToolbox
+ * @param toolboxMode - default |
  * @returns [ xml, workspace ]
  */
 const useBlockly = ({
@@ -43,13 +46,15 @@ const useBlockly = ({
   customTheme,
   customTools = [],
   useDefaultToolbox = false,
+  toolboxMode = null,
 }) => {
   const [workspace, setWorkspace] = React.useState(null);
   const [xml, setXml] = React.useState(initialXml);
   const [didInitialImport, setDidInitialImport] = React.useState(false);
   const [didHandleNewWorkspace, setDidHandleNewWorkspace] = React.useState(false);
   workspaceConfiguration = workspaceConfiguration || config.DEFAULT_WORKSPACE_JSON
-  toolboxConfiguration = useDefaultToolbox ? config.INITIAL_TOOLBOX_JSON : toolboxConfiguration
+  toolboxConfiguration = useDefaultToolbox ? TOOLBOX_JSON['default'] : toolboxConfiguration
+  toolboxConfiguration = (toolboxMode && TOOLBOX_JSON[toolboxMode]) ? TOOLBOX_JSON[toolboxMode] : toolboxConfiguration 
   const onInjectRef = React.useRef(onInject);
   const onDisposeRef = React.useRef(onDispose);
   const workspaceConfigurationRef = React.useRef(workspaceConfiguration);
