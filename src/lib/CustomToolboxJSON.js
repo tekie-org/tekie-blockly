@@ -578,18 +578,6 @@ const TOOLBOX_JSON = {
       { kind: "sep" },
       {
         kind: "category",
-        name: "Custom Button",
-        colour: 19,
-        contents: [
-          {
-            kind: "button",
-            text: "A button",
-            callbackKey: "myFirstButtonPressed",
-          },
-        ],
-      },
-      {
-        kind: "category",
         name: "Variables",
         custom: "VARIABLE",
         colour: 330,

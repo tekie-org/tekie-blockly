@@ -49,12 +49,7 @@ import { BlocklyWorkspace } from './lib';
 const App = () => {
   const workspaceConfiguration = {
     readOnly: false,
-    grid: {
-      spacing: 20,
-      length: 3,
-      colour: '#333',
-      snap: true
-    },
+    grid: false,
     move:{
       scrollbars: {
         horizontal: true,
@@ -73,7 +68,6 @@ const App = () => {
       pinch: true
     },
     trashcan: true,
-    renderer: 'zelos'
   }
 
   React.useEffect(() => {
@@ -83,6 +77,10 @@ const App = () => {
   return (
     <div className="App">
       <div style={{ width: '100%', height: '90vh' }}>
+        <div className="header">
+          <div className="toolboxHeader headerText">Toolbox</div>
+          <div className="workspaceHeader headerText">Workspace</div>
+        </div>
         <BlocklyWorkspace
           useDefaultToolbox
           // customTools={[check2]}

@@ -11,3 +11,27 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.header {
+  display: flex;
+  flex-direction: row;
+  background : #012A38;
+  color: #FFF;
+  
+  & > .headerText {
+    font-family: Nunito;
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 2px solid #fff;
+    padding: 8px 0px;
+  }
+  & > .toolboxHeader {
+    width: 130px;
+  }
+  & > .workspaceHeader {
+    flex: 1;
+  }
+}

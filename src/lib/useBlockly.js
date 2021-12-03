@@ -8,7 +8,7 @@ import { importFromXml, initCustomTools, buildToolboxJSON } from './utils'
 /**
  * Custom Category & Theme For Blockly
  */
-import './customMethods/customCategory'
+// import './customMethods/customCategory'
 import './customMethods/customTheme'
 
 /**
@@ -101,7 +101,8 @@ const useBlockly = ({
           if (CustomToolboxJSON && workspace) {
             if (toolboxConfigurationRef.current && toolboxConfigurationRef.current.kind !== CustomToolboxJSON.kind) {
               /** Blockly doesn't support dynamic change of toolbox mode i.e it can be either of kind flyout or category */
-              throw new Error('Cannot Change Toolbox Mode')
+              // throw new Error('Cannot Change Toolbox Mode')
+              console.error('Cannot Change Toolbox Mode')
             } else {
               workspace.updateToolbox(CustomToolboxJSON);
               toolboxConfigurationRef.current = CustomToolboxJSON;

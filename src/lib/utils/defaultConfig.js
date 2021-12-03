@@ -3,7 +3,7 @@ const INITIAL_XML =
 
 const DEFAULT_WORKSPACE_JSON = {
   readOnly: false,
-  renderer: 'zelos'
+  // renderer: 'zelos'
 }
 
 const config = {
