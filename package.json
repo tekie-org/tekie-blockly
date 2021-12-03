@@ -17,7 +17,6 @@
     "lint:fix": "eslint --fix --ext .js,.jsx src",
     "start": "react-scripts start",
     "build": "babel src/lib --out-dir dist --copy-files",
-    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prepublishOnly": "babel src/lib --out-dir dist --copy-files",
     "prepublish:watch": "babel src/lib --out-dir dist --copy-files",
