@@ -91,6 +91,7 @@ const App = () => {
           onInject={(e) => {
             console.log('INJECT', e)
           }}
+          // customTheme={Blockly.Theme.TekiePlayground}
           onXmlChange={(e) => {
             console.log('XML', e)
           }}

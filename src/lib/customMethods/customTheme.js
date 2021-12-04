@@ -67,7 +67,7 @@ const categoryStyles = {
   }
 };
 
-const componentStyles = {
+const playgroundComponentStyles = {
   "workspaceBackgroundColour": "#E6F7FD",
   "toolboxBackgroundColour": "#DDDDDD",
   "toolboxForegroundColour": "#222",
@@ -88,11 +88,31 @@ const fontStyles = {
   "size": 12
 };
 
+const primaryComponentStyles = {
+  "workspaceBackgroundColour": "#00171f",
+  "toolboxBackgroundColour": "#3eaec1",
+  "toolboxForegroundColour": "#FFF",
+  "flyoutBackgroundColour": "#015f7c",
+  "flyoutForegroundColour": "#FFF",
+  "flyoutOpacity": ".6",
+  "scrollbarColour": "",
+  "scrollbarOpacity": "",
+  "insertionMarkerColour": "",
+  "insertionMarkerOpacity": "",
+  "markerColour": "",
+  "cursorColour": "red",
+};
+
 const BlocklyThemes = {
   TekiePrimary: {
     'blockStyles': TekieDefaultBlockStyles,
-    // 'categoryStyles': categoryStyles,
-    'componentStyles': componentStyles,
+    'categoryStyles': categoryStyles,
+    'componentStyles': primaryComponentStyles,
+    'fontStyle': fontStyles,
+  },
+  TekiePlayground: {
+    'blockStyles': TekieDefaultBlockStyles,
+    'componentStyles': playgroundComponentStyles,
     'fontStyle': fontStyles,
   }
 }
