@@ -87,7 +87,7 @@ const useBlockly = ({
         workspace.updateToolbox(toolboxConfiguration);
       }
     } catch (e) {
-      console.error('From useBlockly ==> ', e)
+      console.error("From useBlockly | [toolboxConfiguration] ==> ", e);
     }
   }, [toolboxConfiguration, workspace]);
 
@@ -111,7 +111,7 @@ const useBlockly = ({
         }
       })()
     } catch (e) {
-      console.error('From useBlockly ==> ', e)
+      console.error("From useBlockly | [customTools] ==> ", e);
     }
   }, [customTools, workspace]);
 
@@ -146,10 +146,10 @@ const useBlockly = ({
       try {
         newWorkspace.dispose();
         if (onDisposeRef.current) {
-          onDisposeFunction(newWorkspace);
+          console.info("From useBlockly ==> Disposed Workspace", newWorkspace);
         }
       } catch (e) {
-        console.error('From useBlockly ==> ', e)
+        console.error("From useBlockly | [dispose] ==> ", e);
       }
     };
   }, [toolboxConfigurationRef]);
@@ -217,7 +217,7 @@ const useBlockly = ({
         workspace.setTheme(blocklyTheme)
       }
     } catch (e) {
-      console.error('From useBlockly ==> ', e)
+      console.error("From useBlockly | [blocklyTheme] ==> ", e);
     }
   }, [customTheme, workspace])
 
