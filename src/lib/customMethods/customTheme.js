@@ -68,7 +68,7 @@ const categoryStyles = {
 };
 
 const playgroundComponentStyles = {
-  "workspaceBackgroundColour": "#E6F7FD",
+  "workspaceBackgroundColour": "#fff",
   "toolboxBackgroundColour": "#DDDDDD",
   "toolboxForegroundColour": "#222",
   "flyoutBackgroundColour": "#d2effa",
