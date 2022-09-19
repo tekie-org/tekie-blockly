@@ -69,12 +69,12 @@ const categoryStyles = {
 
 const playgroundComponentStyles = {
   "workspaceBackgroundColour": "#fff",
-  "toolboxBackgroundColour": "#DDDDDD",
+  "toolboxBackgroundColour": "#F2F4F6",
   "toolboxForegroundColour": "#222",
-  "flyoutBackgroundColour": "#d2effa",
+  "flyoutBackgroundColour": "#FAFAFA",
   "flyoutForegroundColour": "#FFF",
   "flyoutOpacity": "1",
-  "scrollbarColour": "#00ADE6",
+  "scrollbarColour": "#ddd",
   "scrollbarOpacity": "1",
   "insertionMarkerColour": "",
   "insertionMarkerOpacity": "",

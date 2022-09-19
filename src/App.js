@@ -49,7 +49,12 @@ import { BlocklyWorkspace } from './lib';
 const App = () => {
   const workspaceConfiguration = {
     readOnly: false,
-    grid: false,
+    grid:{
+          spacing: 20,
+          length: 3,
+          colour: '#ccc',
+          snap: false
+        },
     move:{
       scrollbars: {
         horizontal: true,
@@ -91,7 +96,7 @@ const App = () => {
           onInject={(e) => {
             console.log('INJECT', e)
           }}
-          // customTheme={Blockly.Theme.TekiePlayground}
+          customTheme={Blockly.Theme.TekiePlayground}
           onXmlChange={(e) => {
             console.log('XML', e)
           }}
